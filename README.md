@@ -22,7 +22,7 @@ user4
 2. Posiziona il file nella **stessa directory** dello script.
 3. Esegui lo script da linea di comando:
 ```
-python secret_santa.py
+python main.py
 ```
 4. In output vengono visualizzati gli abbinamenti generati:
 ```
