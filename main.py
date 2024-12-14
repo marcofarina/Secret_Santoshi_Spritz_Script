@@ -2,7 +2,7 @@ import random
 import hashlib
 
 # Leggi gli handle da un file txt
-def leggi_handle(path: str) -> list:
+def leggi_handle(path: str) -> list[tuple[str, str]]:
     with open(path, 'r') as file:
         lista_handle = [line.strip() for line in file.readlines()]
     handle_hash = [(handle, hashlib.sha256(handle.encode()).hexdigest()) for handle in lista_handle]
@@ -12,6 +12,9 @@ def leggi_handle(path: str) -> list:
     with open('hash_ordinati.txt', 'w') as hash_file:
         for handle, hash_value in handle_hash:
             hash_file.write(f"{handle}: {hash_value}\n")
+    with open('hash_pubblico.txt', 'w') as hash_file:
+        for handle, hash_value in handle_hash:
+            hash_file.write(f"{hash_value}\n")
     return handle_hash
 
 # Funzione per generare gli abbinamenti dei regali
@@ -39,7 +42,10 @@ def visualizza_abbinamenti(abbinamenti):
 
 # Funzione per scrivere gli abbinamenti su un file
 def scrivi_abbinamenti(abbinamenti, path: str):
-    with open(path, 'w') as file:
+    with open(path+".txt", 'w') as file:
+        for mittente, destinatario in abbinamenti:
+            file.write(f"{mittente[0]} -> {destinatario[0]}\n")
+    with open(path+"_pubblico.txt", 'w') as file:
         for mittente, destinatario in abbinamenti:
             file.write(f"{mittente[1]} -> {destinatario[1]}\n")
 
@@ -49,7 +55,7 @@ def main(path: str) -> None:
     handle_list = leggi_handle(path)
     abbinamenti = genera_abbinamenti(handle_list, seed)
     visualizza_abbinamenti(abbinamenti)
-    scrivi_abbinamenti(abbinamenti, 'abbinamenti.txt')
+    scrivi_abbinamenti(abbinamenti, 'abbinamenti')
 
 if __name__ == '__main__':
     file_path = 'handle_telegram.txt'
