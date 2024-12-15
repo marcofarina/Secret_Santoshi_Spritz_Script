@@ -1,11 +1,13 @@
 import random
 import hashlib
 
+salt = "98a63b741b4b48b78348ef09efadfd2f0d09888e71271b261ee39415feaa6a31"
+
 # Leggi gli handle da un file txt
 def leggi_handle(path: str) -> list[tuple[str, str]]:
     with open(path, 'r') as file:
         lista_handle = [line.strip() for line in file.readlines()]
-    handle_hash = [(handle, hashlib.sha256(handle.encode()).hexdigest()) for handle in lista_handle]
+    handle_hash = [(handle, hashlib.sha256(handle.encode() + salt.encode()).hexdigest()) for handle in lista_handle]
     handle_hash.sort(key=lambda x: x[1])  # Ordina per hash
 
     # Scrivi gli hash ordinati su un file
